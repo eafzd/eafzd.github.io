@@ -20,16 +20,28 @@
 
 title: Ecosystem Approaches to Forecasting Zoonotic Diseases (EAFZD)
 description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  Research project at the University of Cambridge developing forecasting systems 
+  for zoonotic disease risk using ecosystem approaches. Led by Prof Kate Jones, 
+  we focus on Lassa fever in West Africa and create practical tools for public 
+  health decision-making.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://eafzd.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+
+# Site metadata
+author: "Prof Kate Jones"
+institution: "University of Cambridge"
+email: "contact@example.com" # Update with actual contact email
+github_username: "eafzd"
+twitter_username: "" # Add if available
 
 # Build settings
 theme: minima
 plugins:
   - jekyll-feed
+
+# Include directories that start with dots
+include:
+  - .well-known
 
 # Exclude from processing.
 # The following items will not be processed, by default.

@@ -1,0 +1,267 @@
+Ecosystem Approaches to Forecasting
+Zoonotic Diseases
+Prof Kate Jones
+Credit: FCDO
+UNIVERSITY OF
+CAMBRIDGE
+Thanks to an amazing team!
+HEV approaches are used to understand climate risk
+A hazard is a
+potential source
+of harm or
+adverse effects
+Exposure measures how
+many or what proportion of
+a population or environment
+is in contact with a
+particular hazard
+Vulnerability is the susceptibility of a community, system, or
+ecosystem to suffer harm due to exposure to a hazard
+A response are action(s) taken to reduce, adapt to,
+or recover from the risks
+HEV approach to understand zoonotic disease risk
+Climate Change
+Land use Change
+Disease Spillover Risk
+Gibb et al. 2020 BMJ
+Managing Lassa fever in West Africa
+Viral spillover
+in agricultural
+settings and
+homes
+Limited human-
+to-human
+transmission
+Extreme seasonal
+population and infection
+dynamics in reservoir host
+(Mastomys natalensis)
+• For Lassa, we have reasonably good
+human case surveillance coverage for
+Nigeria – so we can develop reasonably
+accurate statistical models.
+• Extending to less well-sampled regions
+of Nigeria or West Africa will require
+models that include key ecological
+processes (e.g. host abundance /
+infection dynamics) to improve their
+generalizability.
+STATISTICAL
+MECHANISTIC
+‘HYBRID’
+Fitted to human case data
+(e.g. spatiotemporal
+models; risk maps) – often
+generalize poorly
+Based on mathematical
+description of key
+biological parameters –
+difficult to parameterize
+and calibrate
+“Grey area” incorporating
+certain key ecological
+processes (e.g. statistical
+models of reservoir
+abundance)
+Disease risk modelling – from statistical to mechanistic
+Redding, Gibb et al. 2021 Nature Comms
+Lassa fever spatial and temporal predictions in Nigeria
+Including climate information (rainfall,
+drought, vegetation) improves predictions
+of Lassa case surges up to 3 months in
+advance
+Spatial predictions of
+the Lassa fever
+endemic area in
+Nigeria (case
+occurrence
+probability)
+West Africa Lassa fever environmental-mechanistic model
+Force of zoonotic infection z,
+per grid cell j
+cj = number of host-human
+contacts per grid cell, per day j.
+c̅ = mean number of human-host
+contacts across all grid cells per
+day, κ = spill-over risk, and Sj =
+number of susceptible people per
+grid cell j.
+Black dots are reported cases of
+Lassa fever 1967-2012
+Spatial Distribution of LAS spill-over events
+from environmental-mechanistic model
+Redding et al. 2016 Methods in Ecology & Evolution
+Smith et al. 2024 Nature Medicine
+How to translate models into decision support tools?
+Useful forecasts for users (e.g.
+public health agencies)
+Platforms to provide accurate and timely
+predictions at scales relevant to user needs
+Environmentally-driven
+disease risk models
+Co-developing methods, metrics, and visuals
+with users for clear communication
+Sentinel
+Forecasting
+System for
+Infectious
+Disease Risk
+UNIVERSITY OF
+CAMBRIDGE
+Develop an integrated real-time platform to forecast and manage
+infectious disease risk for public health agencies in West Africa
+Use Case 1 - Nigeria Centre for Disease Control
+UNIVERSITY OF
+CAMBRIDGE
+LGA/State-level case
+data
+(updated e.g. monthly)
+Processed
+variables
+NCDC
+Platform backend
+Spatiotemporal
+model
+Model data
+CSV
+Climate/env/
+socioeconomic
+data lake
+(updated e.g.
+weekly/monthly)
+APIs or
+stable
+URLs
+(for regularly
+updating
+products e.g.
+climate data)
+External
+data
+sources
+Other stored model
+objects (e.g. shapefiles)
+Generate predictions
+from fitted model(s) (1-3
+month lead)
+Fitted model or ensemble
+(re-inferred periodically e.g.
+6mth/annual)
+Platform front end
+Predictions
+CSV
+(raw output)
+Forecast cases +
+uncertainty per
+admin unit at
+multiple lead times
+(e.g. 1-3 mnth)
+Mapping nowcast
+indicator at admin-
+levels nationwide
+Visualization approaches workshopped with
+stakeholders
+Entire pipeline auto-updated (e.g. weekly/monthly) to generate
+iteratively updated forecasts
+Tables of validation
+statistics
+(overall/per admin)
+(codebase in R, deps: raster, sf,
+INLA)
+UNIVERSITY OF
+CAMBRIDGE
+Sentinel forecasting model pipeline
+UNIVERSITY OF
+CAMBRIDGE
+Nowcast - annual probability of Lassa fever occurrence
+UNIVERSITY OF
+CAMBRIDGE
+Monthly Forecasts
+Possible Traffic Light Map?
+UNIVERSITY OF
+CAMBRIDGE
+Visual interface - Data Story Platform
+UNIVERSITY OF
+CAMBRIDGE
+How to incorporate tools into existing NCDC interface?
+Spatial nowcasting model
+Temporal short-term forecast model
+Potential uses: Short-to-
+medium term outbreak
+forecast/’early warning’
+Output: Weekly/monthly
+predicted Lassa cases
+(LGA/State level), 0-3
+months in advance
+Output: Annual Lassa
+incidence or endemicity
+(LGA)
+Potential uses: Situational
+awareness/nowcasting
+Use Case 2 - CEPI Lassa Vaccination Strategies - Nigeria
+UNIVERSITY OF
+CAMBRIDGE
+Gibb et al. in prep.
+Sentinel
+Forecasting
+System for
+Infectious
+Disease Risk
+Targeted
+vaccination in
+high-incidence or
+endemic areas
+could significantly
+reduce
+hospitalizations
+with fewer
+resources, but
+nationwide
+strategies would
+have a broader
+impact
+Use Case 2 - CEPI Lassa Vaccination Strategies - Nigeria
+UNIVERSITY OF
+CAMBRIDGE
+Gibb et al. in prep.
+Sentinel
+Forecasting
+System for
+Infectious
+Disease Risk
+Identifying
+candidate cities for
+Lassa vaccine
+stockpiles
+B
+C D
+A
+E
+CEPI Lassa Vaccination Strategies – West Africa
+UNIVERSITY OF
+CAMBRIDGE
+Sentinel
+Forecasting
+System for
+Infectious
+Disease Risk
+Gibb et al. in prep.
+Targeting districts
+with evidence of
+LASV circulation is
+the most
+resource-efficient
+strategy for
+reducing risky
+contacts, but
+broader strategies
+might be
+necessary for
+wider population
+protection
+UNIVERSITY OF
+CAMBRIDGE
+Visual interface - Data Story Platform
+Conclusions
+UNIVERSITY OF
+CAMBRIDGE
