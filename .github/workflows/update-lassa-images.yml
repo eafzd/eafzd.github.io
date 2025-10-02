@@ -94,6 +94,7 @@ jobs:
     
     - name: Commit and push changes
       run: |
+        git status
         # Check if there are any changes to commit
         if git diff --quiet && git diff --staged --quiet; then
           echo "No changes to commit"
