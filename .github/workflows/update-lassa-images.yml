@@ -1,0 +1,129 @@
+name: Update Lassa Sentinel Images
+
+on:
+  schedule:
+    # Run every Monday at 9:00 AM UTC (adjust timezone as needed)
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual triggering
+
+# Set permissions for the GITHUB_TOKEN
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  update-images:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        ref: gh-pages
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+    
+    - name: Download PNG files
+      run: |
+        python << 'EOF'
+        import requests
+        import os
+        import base64
+
+        # Create images directory if it doesn't exist
+        os.makedirs('assets/images/lassa-sentinel', exist_ok=True)
+
+        filenames = ['storymap-linechart.png', 'storymap-single-map.png', 'storymap-timeseries-map.png']
+
+        base_url = "https://lassa-sentinel-app.blackcoast-d7c432f1.uksouth.azurecontainerapps.io/files/"
+
+        downloaded_files = []
+        failed_files = []
+
+        for filename in filenames:
+            try:
+                # Construct the full URL
+                file_url = f"{base_url}{filename}?type=weekly"
+
+                print(f"Downloading {filename}...")
+
+                # Download the file
+                response = requests.get(file_url, timeout=60)
+                response.raise_for_status()
+                decoded_content = base64.b64decode(response.json()['data'][0][22:])
+                print(f"Successfully decoded base64 content for {filename}")
+
+                # Save to the assets/images/lassa-sentinel directory
+                file_path = f"assets/images/lassa-sentinel/{filename}"
+                with open(file_path, 'wb') as f:
+                    f.write(decoded_content)
+
+                downloaded_files.append(filename)
+                print(f"Successfully downloaded {filename}")
+
+            except Exception as e:
+                print(f"Failed to download {filename}: {e}")
+                failed_files.append(filename)
+
+        print(f"Downloaded {len(downloaded_files)} files successfully")
+        if failed_files:
+            print(f"Failed to download {len(failed_files)} files: {failed_files}")
+
+        # Save summary for commit message
+        with open('download_summary.txt', 'w') as f:
+            f.write(f"Downloaded {len(downloaded_files)} files: {', '.join(downloaded_files)}\n")
+            if failed_files:
+                f.write(f"Failed to download {len(failed_files)} files: {', '.join(failed_files)}\n")
+
+        EOF
+    
+    - name: Configure Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+    
+    - name: Commit and push changes
+      run: |
+        # Check if there are any changes to commit
+        if git diff --quiet && git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          # Add all changes
+          git add .
+          
+          # Create commit message
+          if [ -f download_summary.txt ]; then
+            commit_msg="Update Lassa Sentinel images: $(cat download_summary.txt)"
+          else
+            commit_msg="Update Lassa Sentinel images"
+          fi
+          
+          # Commit changes
+          git commit -m "$commit_msg"
+          
+          # Push to gh-pages branch
+          git push origin gh-pages
+          
+          echo "Changes committed and pushed successfully"
+        fi
+    
+    - name: Summary
+      run: |
+        echo "Workflow completed!"
+        if [ -f download_summary.txt ]; then
+          echo "Download summary:"
+          cat download_summary.txt
+        else
+          echo "No files were downloaded"
+        fi
+
