@@ -92,16 +92,39 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
     
+    - name: Debug file system
+      run: |
+        echo "=== Current directory structure ==="
+        ls -la
+        echo "=== Assets directory ==="
+        ls -la assets/ || echo "assets directory does not exist"
+        echo "=== Images directory ==="
+        ls -la assets/images/ || echo "assets/images directory does not exist"
+        echo "=== Lassa-sentinel directory ==="
+        ls -la assets/images/lassa-sentinel/ || echo "lassa-sentinel directory does not exist"
+        echo "=== File sizes ==="
+        find assets/images/lassa-sentinel/ -type f -exec ls -lh {} \; 2>/dev/null || echo "No files found in lassa-sentinel directory"
+
     - name: Commit and push changes
       run: |
+        echo "=== Git status before adding ==="
         git status
+        echo "=== Git diff ==="
+        git diff
+        echo "=== Git diff --staged ==="
+        git diff --staged
+        
+        # Force add the lassa-sentinel directory and files
+        git add assets/images/lassa-sentinel/ || echo "No lassa-sentinel directory to add"
+        git add download_summary.txt || echo "No download_summary.txt to add"
+        
+        echo "=== Git status after adding ==="
+        git status
+        
         # Check if there are any changes to commit
         if git diff --quiet && git diff --staged --quiet; then
           echo "No changes to commit"
         else
-          # Add all changes
-          git add .
-          
           # Create commit message
           if [ -f download_summary.txt ]; then
             commit_msg="Update Lassa Sentinel images: $(cat download_summary.txt)"
