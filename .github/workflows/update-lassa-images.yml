@@ -33,15 +33,31 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
     
-    - name: Download PNG files
+    - name: Download PNG files with timestamps
       run: |
         python << 'EOF'
         import requests
         import os
         import base64
+        from datetime import datetime
+        import glob
 
         # Create images directory if it doesn't exist
         os.makedirs('assets/images/lassa-sentinel', exist_ok=True)
+
+        # Generate timestamp for this update
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        print(f"Using timestamp: {timestamp}")
+
+        # Remove old images first to avoid caching issues
+        old_files = glob.glob('assets/images/lassa-sentinel/*.png')
+        if old_files:
+            print(f"Removing {len(old_files)} old files:")
+            for old_file in old_files:
+                print(f"  - {old_file}")
+                os.remove(old_file)
+        else:
+            print("No old files to remove")
 
         filenames = ['storymap-linechart.png', 'storymap-single-map.png', 'storymap-timeseries-map.png']
 
@@ -49,6 +65,7 @@ jobs:
 
         downloaded_files = []
         failed_files = []
+        new_filenames = []
 
         for filename in filenames:
             try:
@@ -63,13 +80,18 @@ jobs:
                 decoded_content = base64.b64decode(response.json()['data'][0][22:])
                 print(f"Successfully decoded base64 content for {filename}")
 
-                # Save to the assets/images/lassa-sentinel directory
-                file_path = f"assets/images/lassa-sentinel/{filename}"
+                # Create new filename with timestamp
+                name, ext = os.path.splitext(filename)
+                new_filename = f"{name}_{timestamp}{ext}"
+                new_filenames.append(new_filename)
+
+                # Save to the assets/images/lassa-sentinel directory with new name
+                file_path = f"assets/images/lassa-sentinel/{new_filename}"
                 with open(file_path, 'wb') as f:
                     f.write(decoded_content)
 
-                downloaded_files.append(filename)
-                print(f"Successfully downloaded {filename}")
+                downloaded_files.append(new_filename)
+                print(f"Successfully downloaded and saved as {new_filename}")
 
             except Exception as e:
                 print(f"Failed to download {filename}: {e}")
@@ -79,11 +101,63 @@ jobs:
         if failed_files:
             print(f"Failed to download {len(failed_files)} files: {failed_files}")
 
-        # Save summary for commit message
+        # Save summary for commit message and filename mapping
         with open('download_summary.txt', 'w') as f:
             f.write(f"Downloaded {len(downloaded_files)} files: {', '.join(downloaded_files)}\n")
             if failed_files:
                 f.write(f"Failed to download {len(failed_files)} files: {', '.join(failed_files)}\n")
+            f.write(f"Timestamp: {timestamp}\n")
+
+        # Save filename mapping for potential use in other steps
+        with open('filename_mapping.txt', 'w') as f:
+            for original, new_name in zip(filenames, new_filenames):
+                f.write(f"{original},{new_name}\n")
+
+        EOF
+    
+    - name: Update image references in markdown files
+      run: |
+        python << 'EOF'
+        import os
+        import glob
+        import re
+
+        # Read the filename mapping
+        if os.path.exists('filename_mapping.txt'):
+            with open('filename_mapping.txt', 'r') as f:
+                mappings = {}
+                for line in f:
+                    original, new_name = line.strip().split(',')
+                    mappings[original] = new_name
+            
+            print(f"Found {len(mappings)} filename mappings")
+            
+            # Find all markdown files
+            markdown_files = glob.glob('*.markdown') + glob.glob('*.md')
+            
+            for md_file in markdown_files:
+                print(f"Processing {md_file}")
+                with open(md_file, 'r') as f:
+                    content = f.read()
+                
+                original_content = content
+                
+                # Update each image reference
+                for original, new_name in mappings.items():
+                    # Replace the filename in image src attributes
+                    pattern = f'/assets/images/lassa-sentinel/{re.escape(original)}'
+                    replacement = f'/assets/images/lassa-sentinel/{new_name}'
+                    content = re.sub(pattern, replacement, content)
+                
+                # Write back if changes were made
+                if content != original_content:
+                    with open(md_file, 'w') as f:
+                        f.write(content)
+                    print(f"Updated {md_file}")
+                else:
+                    print(f"No changes needed for {md_file}")
+        else:
+            print("No filename mapping found, skipping markdown updates")
 
         EOF
     
@@ -114,9 +188,10 @@ jobs:
         echo "=== Git diff --staged ==="
         git diff --staged
         
-        # Force add the lassa-sentinel directory and files
-        git add assets/images/lassa-sentinel/ || echo "No lassa-sentinel directory to add"
+        # Add all changes (including deletions of old files and additions of new files)
+        git add -A assets/images/lassa-sentinel/ || echo "No lassa-sentinel directory changes to add"
         git add download_summary.txt || echo "No download_summary.txt to add"
+        git add filename_mapping.txt || echo "No filename_mapping.txt to add"
         
         echo "=== Git status after adding ==="
         git status
