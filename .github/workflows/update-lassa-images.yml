@@ -192,6 +192,8 @@ jobs:
         git add -A assets/images/lassa-sentinel/ || echo "No lassa-sentinel directory changes to add"
         git add download_summary.txt || echo "No download_summary.txt to add"
         git add filename_mapping.txt || echo "No filename_mapping.txt to add"
+        git add *.markdown || echo "No markdown files to add"
+        git add *.md || echo "No md files to add"
         
         echo "=== Git status after adding ==="
         git status
