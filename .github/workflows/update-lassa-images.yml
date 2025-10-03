@@ -144,9 +144,21 @@ jobs:
                 
                 # Update each image reference
                 for original, new_name in mappings.items():
-                    # Replace the filename in image src attributes
-                    pattern = f'/assets/images/lassa-sentinel/{re.escape(original)}'
+                    # Extract the base name without extension
+                    base_name = os.path.splitext(original)[0]
+                    
+                    # Pattern to match any timestamped version of this file
+                    # Matches: base_name_YYYYMMDD_HHMMSS.ext
+                    pattern = f'/assets/images/lassa-sentinel/{re.escape(base_name)}_\\d{{8}}_\\d{{6}}\\.png'
                     replacement = f'/assets/images/lassa-sentinel/{new_name}'
+                    
+                    print(f"  Replacing pattern: {pattern}")
+                    print(f"  With: {replacement}")
+                    
+                    # Count matches before replacement
+                    matches = re.findall(pattern, content)
+                    print(f"  Found {len(matches)} matches: {matches}")
+                    
                     content = re.sub(pattern, replacement, content)
                 
                 # Write back if changes were made
