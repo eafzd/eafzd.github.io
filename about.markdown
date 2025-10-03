@@ -1,14 +1,32 @@
 ---
 layout: page
-title: Current Work
-permalink: /current-work/
+title: About
+permalink: /about/
 ---
 
-# Current Work
+# Ecosystem Approaches to Forecasting Zoonotic Diseases (EAFZD)
 
-Our research focuses on developing practical forecasting systems for zoonotic diseases, with a primary emphasis on **Lassa fever in West Africa**. We work closely with public health agencies and international organizations to translate our research into actionable tools.
+Welcome to the EAFZD research project, a multi-institution collaboration led by Prof Kate Jones of the People and Nature Lab at University College London. We develop innovative forecasting systems to predict and manage zoonotic disease risk using ecosystem-based approaches.
 
-## Lassa Fever Research in West Africa
+<img src="/assets/images/hev-framework-diagram.png" alt="HEV Framework Diagram" class="float-right">
+
+## Our Mission
+
+
+We use the Hazard-Exposure-Vulnerability (HEV) framework to understand how climate change and land use change affect disease spillover risk from wildlife to humans. Our research focuses on developing hybrid statistical-mechanistic models that can provide accurate, timely predictions for public health decision-making.
+
+
+## Key Research Areas
+
+- **Lassa Fever Forecasting**: Developing real-time prediction systems for West Africa
+- **Vaccination Strategies**: Supporting targeted vaccination campaigns through risk modeling
+- **Decision Support Tools**: Translating research into actionable public health interventions
+
+<img src="/assets/images/lassa-schematic.png" alt="Disease spillover risk diagram">
+
+## Current Focus
+
+Our primary case study focuses on **Lassa fever in Nigeria**, where we work closely with the Nigeria Centre for Disease Control (NCDC) and the Coalition for Epidemic Preparedness Innovations (CEPI) to develop practical forecasting tools.
 
 <img src="/assets/images/nyt.png" alt="Disease spillover risk diagram" class="float-right">
 

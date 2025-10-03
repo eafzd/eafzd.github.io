@@ -4,28 +4,21 @@ title: Ecosystem Approaches to Forecasting Zoonotic Diseases (EAFZD)
 description: "Research project developing forecasting systems for zoonotic disease risk using ecosystem approaches"
 ---
 
-# Ecosystem Approaches to Forecasting Zoonotic Diseases (EAFZD)
+# Latest forecasts for Nigeria
 
-Welcome to the EAFZD research project, a multi-institution collaboration led by Prof Kate Jones of the People and Nature Lab at University College London. We develop innovative forecasting systems to predict and manage zoonotic disease risk using ecosystem-based approaches.
+<img src="/assets/images/lassa-sentinel/storymap-linechart_20251003_131002.png" alt="Forecasts by state">
 
-<img src="/assets/images/hev-framework-diagram.png" alt="HEV Framework Diagram" class="float-right">
+Time-series charts show in green how well the model fits to confirmed case counts in the training dataset (grey dots), with projections from November 2024 shown in purple. We used the conformal prediction algorithm to visualise 67% coverage intervals around the mean model output for each state.
 
-## Our Mission
+The  Moving Epidemic Method  was used to derive high and medium epidemic thresholds for each state; these are shown as red and yellow lines respectively. 
+
+The map below shows how the maximum predicted upper bound of the 67% conformal interval in the forecast period compares with the MEM thresholds. Bauchi in the north and Ondo in the south are the two states with peak forecasts exceeding the high-intensity threshold. 
+
+<img src="/assets/images/lassa-sentinel/storymap-single-map_20251003_131002.png" alt="Forecasts map">
+
+Looking at the forecasts from another angle, we can also see how the average weekly upper bound value changes over the months in the forecast period. From this perspective we see that Bauchi is the only state which crosses the high-intensity threshold. Others, including Ondo, are forecast to exceed the medium threshold for part of the forecast period. 
+
+<img src="/assets/images/lassa-sentinel/storymap-timeseries-map_20251003_131002.png" alt="Timeseries forecasts map">
 
 
-We use the Hazard-Exposure-Vulnerability (HEV) framework to understand how climate change and land use change affect disease spillover risk from wildlife to humans. Our research focuses on developing hybrid statistical-mechanistic models that can provide accurate, timely predictions for public health decision-making.
-
-
-## Key Research Areas
-
-- **Lassa Fever Forecasting**: Developing real-time prediction systems for West Africa
-- **Vaccination Strategies**: Supporting targeted vaccination campaigns through risk modeling
-- **Decision Support Tools**: Translating research into actionable public health interventions
-
-## Current Focus
-
-Our primary case study focuses on **Lassa fever in Nigeria**, where we work closely with the Nigeria Centre for Disease Control (NCDC) and the Coalition for Epidemic Preparedness Innovations (CEPI) to develop practical forecasting tools.
-
-<img src="/assets/images/lassa-schematic.png" alt="Disease spillover risk diagram">
-
-[Learn more about our current projects →](/current-work/)
+[Learn more about our current projects →](/about/)
