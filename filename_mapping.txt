@@ -1,3 +1,0 @@
-storymap-linechart.png,storymap-linechart_20251006_092602.png
-storymap-single-map.png,storymap-single-map_20251006_092602.png
-storymap-timeseries-map.png,storymap-timeseries-map_20251006_092602.png
