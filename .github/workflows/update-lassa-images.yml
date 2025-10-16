@@ -1,9 +1,9 @@
 name: Update Lassa Sentinel Images
 
 on:
-  schedule:
-    # Run every Monday at 9:00 AM UTC (adjust timezone as needed)
-    - cron: '0 9 * * 1'
+  # schedule:
+  #   # Run every Monday at 9:00 AM UTC (adjust timezone as needed)
+  #   - cron: '0 9 * * 1'
   workflow_dispatch: # Allow manual triggering
 
 # Set permissions for the GITHUB_TOKEN
@@ -93,6 +93,11 @@ jobs:
                 downloaded_files.append(new_filename)
                 print(f"Successfully downloaded and saved as {new_filename}")
 
+            except requests.exceptions.HTTPError as e:
+                print(f"HTTP error downloading {filename}: {e}")
+                if e.response.status_code == 500:
+                    print(f"Server error (500) for {filename}")
+                failed_files.append(filename)
             except Exception as e:
                 print(f"Failed to download {filename}: {e}")
                 failed_files.append(filename)
@@ -100,6 +105,13 @@ jobs:
         print(f"Downloaded {len(downloaded_files)} files successfully")
         if failed_files:
             print(f"Failed to download {len(failed_files)} files: {failed_files}")
+
+        # Check if we have any successful downloads
+        if len(downloaded_files) == 0:
+            print("ERROR: No files were successfully downloaded!")
+            print("This could indicate a server error or API issue.")
+            print("Workflow will fail to prevent committing broken links.")
+            exit(1)
 
         # Save summary for commit message and filename mapping
         with open('download_summary.txt', 'w') as f:
@@ -214,6 +226,19 @@ jobs:
         if git diff --quiet && git diff --staged --quiet; then
           echo "No changes to commit"
         else
+          # Additional safety check: ensure we have download summary indicating successful downloads
+          if [ ! -f download_summary.txt ]; then
+            echo "ERROR: No download summary found. This indicates the download step failed."
+            echo "Refusing to commit to prevent broken links."
+            exit 1
+          fi
+          
+          # Check if download summary indicates any successful downloads
+          if ! grep -q "Downloaded [1-9]" download_summary.txt; then
+            echo "ERROR: Download summary indicates no successful downloads."
+            echo "Refusing to commit to prevent broken links."
+            exit 1
+          fi
           # Create commit message
           if [ -f download_summary.txt ]; then
             commit_msg="Update Lassa Sentinel images: $(cat download_summary.txt)"
