@@ -39,7 +39,7 @@ jobs:
         import time
 
         base_url = "https://lassa-sentinel-app.blackcoast-d7c432f1.uksouth.azurecontainerapps.io"
-        status_url = f"{base_url}/status"
+        status_url = f"{base_url}/status?type=weekly"
         
         max_attempts = 10
         wait_seconds = 5
