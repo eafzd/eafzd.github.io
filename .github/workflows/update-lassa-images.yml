@@ -33,6 +33,53 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
     
+    - name: Check API status
+      run: |
+        python << 'EOF'
+        import requests
+        import time
+
+        base_url = "https://lassa-sentinel-app.blackcoast-d7c432f1.uksouth.azurecontainerapps.io"
+        status_url = f"{base_url}/status"
+        
+        max_attempts = 10
+        wait_seconds = 5
+        
+        print(f"Checking API status at {status_url}")
+        
+        for attempt in range(1, max_attempts + 1):
+            try:
+                print(f"Attempt {attempt}/{max_attempts}...")
+                response = requests.get(status_url, timeout=30)
+                
+                if response.status_code == 200:
+                    print(f"✓ API status check passed (HTTP 200)")
+                    print(f"Response: {response.text[:200] if response.text else 'No response body'}")
+                    exit(0)
+                else:
+                    print(f"✗ API returned status code {response.status_code}")
+                    if attempt < max_attempts:
+                        print(f"Waiting {wait_seconds} seconds before retry...")
+                        time.sleep(wait_seconds)
+                    else:
+                        print(f"ERROR: API status check failed after {max_attempts} attempts")
+                        print(f"Final status code: {response.status_code}")
+                        exit(1)
+                        
+            except requests.exceptions.RequestException as e:
+                print(f"✗ Request failed: {e}")
+                if attempt < max_attempts:
+                    print(f"Waiting {wait_seconds} seconds before retry...")
+                    time.sleep(wait_seconds)
+                else:
+                    print(f"ERROR: API status check failed after {max_attempts} attempts")
+                    print(f"Final error: {e}")
+                    exit(1)
+        
+        print(f"ERROR: API status check failed after {max_attempts} attempts")
+        exit(1)
+        EOF
+    
     - name: Download PNG files with timestamps
       run: |
         python << 'EOF'
