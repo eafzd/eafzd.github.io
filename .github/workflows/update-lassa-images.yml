@@ -1,9 +1,8 @@
 name: Update Lassa Sentinel Images
 
 on:
-  # schedule:
-  #   # Run every Monday at 9:00 AM UTC (adjust timezone as needed)
-  #   - cron: '0 9 * * 1'
+  schedule:
+    - cron: '0 9 1 * *'
   workflow_dispatch: # Allow manual triggering
 
 # Set permissions for the GITHUB_TOKEN
