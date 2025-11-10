@@ -1,0 +1,75 @@
+name: Execute model run via API
+
+on:
+  schedule:
+    # Run at 8:00 AM UTC on the first day of each month
+    - cron: '0 8 1 * *'
+  workflow_dispatch: # Allow manual triggering
+
+# Set permissions for the GITHUB_TOKEN
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  execute-api:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+    
+    - name: Execute API endpoint
+      run: |
+        python << 'EOF'
+        import requests
+
+        base_url = "https://lassa-sentinel-app.blackcoast-d7c432f1.uksouth.azurecontainerapps.io"
+        execute_url = f"{base_url}/execute?type=weekly&updateCovariates=True"
+        
+        print(f"Calling execute endpoint at {execute_url}")
+        
+        try:
+            response = requests.post(execute_url, timeout=300)
+            
+            print(f"Response status code: {response.status_code}")
+            print(f"Response headers: {dict(response.headers)}")
+            
+            if response.status_code == 200:
+                print(f"✓ Execute endpoint call successful (HTTP 200)")
+                if response.text:
+                    print(f"Response body: {response.text[:500]}")
+                else:
+                    print("No response body")
+            else:
+                print(f"✗ Execute endpoint returned status code {response.status_code}")
+                if response.text:
+                    print(f"Response body: {response.text[:500]}")
+                response.raise_for_status()
+                
+        except requests.exceptions.HTTPError as e:
+            print(f"HTTP error calling execute endpoint: {e}")
+            if hasattr(e, 'response') and e.response is not None:
+                print(f"Status code: {e.response.status_code}")
+                if e.response.text:
+                    print(f"Response body: {e.response.text[:500]}")
+            exit(1)
+        except requests.exceptions.RequestException as e:
+            print(f"Request failed: {e}")
+            exit(1)
+        except Exception as e:
+            print(f"Unexpected error: {e}")
+            exit(1)
+        EOF
+    
+    - name: Summary
+      run: |
+        echo "Execute API workflow completed!"
+
