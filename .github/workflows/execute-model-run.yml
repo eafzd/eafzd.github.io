@@ -37,7 +37,7 @@ jobs:
         print(f"Calling execute endpoint at {execute_url}")
         
         try:
-            response = requests.post(execute_url, timeout=300)
+            response = requests.get(execute_url, timeout=300)
             
             print(f"Response status code: {response.status_code}")
             print(f"Response headers: {dict(response.headers)}")
