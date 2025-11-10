@@ -32,7 +32,7 @@ jobs:
         import requests
 
         base_url = "https://lassa-sentinel-app.blackcoast-d7c432f1.uksouth.azurecontainerapps.io"
-        execute_url = f"{base_url}/execute?type=weekly&updateCovariates=True"
+        execute_url = f"{base_url}/execute?type=weekly"
         
         print(f"Calling execute endpoint at {execute_url}")
         
