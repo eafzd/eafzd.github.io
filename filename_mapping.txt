@@ -1,3 +1,3 @@
-storymap-linechart.png,storymap-linechart_20251201_092109.png
-storymap-single-map.png,storymap-single-map_20251201_092109.png
-storymap-timeseries-map.png,storymap-timeseries-map_20251201_092109.png
+storymap-linechart.png,storymap-linechart_20260101_091828.png
+storymap-single-map.png,storymap-single-map_20260101_091828.png
+storymap-timeseries-map.png,storymap-timeseries-map_20260101_091828.png
