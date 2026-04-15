@@ -16,7 +16,7 @@ The map below shows how the maximum predicted upper bound of the 67% conformal i
 
 <img src="/assets/images/lassa-sentinel/storymap-single-map_20260401_100129.png" alt="Forecasts map">
 
-Looking at the forecasts from another angle, we can also see how the average weekly upper bound value changes over the months in the forecast period. From this perspective we see that the season is expected to reach a peak more generally in February before subsiding by April. 
+Looking at the forecasts from another angle, we can also see how the average weekly upper bound value changes over the months in the forecast period.
 
 <img src="/assets/images/lassa-sentinel/storymap-timeseries-map_20260401_100129.png" alt="Timeseries forecasts map">
 
